@@ -6,9 +6,9 @@ def start ():
         opcao = int(input("Digite uma opção: "))
 
         if (opcao == 1):
-            nome_jogador = input("Informe seu nome: ")
+            nome_jogador = input("Informe seu nome: ").strip().upper()
             #carregar_arquivo_personagem()
-            welcome()
+            welcome(nome_jogador)
         elif (opcao == 2):
             sair = 1
         else:
@@ -21,14 +21,12 @@ def carregar_arquivo_personagem ():
 
     return personagens
 
-def welcome ():
-    print("*"*50)
-    print("*                                                *")
-    print("\t\tBEM-VINDO AO MUNDO DO REI MALVADO            *")
-    print("\t\tDEFENDA SUA HONRA EM BATALHAS MORTAIS        *")
-    print("*\tSUAS ESCOLHAS DEFINIRAM O DESTINO DE SUA JORNADA*")
-    print("*                                                *")
-    print("*"*50)
+def welcome (nome_jogador):
+    print('* '*30)
+    print("\t\t\t\tBEM-VINDO {}".format(nome_jogador))
+    print("\t\tDEFENDA SUA HONRA EM BATALHAS MORTAIS")
+    print("\tSUAS ESCOLHAS DEFINIRAM O DESTINO DE SUA JORNADA")
+    print('* ' * 30)
 
 if (__name__ == "__main__"):
     start()
