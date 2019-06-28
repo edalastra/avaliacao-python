@@ -1,0 +1,47 @@
+$ git stash list
+stash@{0}: WIP on pdb_python: 4173a24 atividade 03: adicionando escolhas a narrativa
+
+$ git stash show stash@{0}
+ jogo.py | 234 +++++++++++++++++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 203 insertions(+), 31 deletions(-)
+
+$ git diff master stash@{0}
+diff --git a/jogo.py b/jogo.py
+index 45ee6d3..13f05bd 100644
+--- a/jogo.py
++++ b/jogo.py
+@@ -1,27 +1,43 @@
++from random import randrange
++
++def carregar_arquivo (nome_arquivo):
++    arquivo = open(nome_arquivo, 'r')
++    itens = arquivo.read().split("\n")
++    arquivo.close()
++
++    return itens
++
++personagens = carregar_arquivo('personagens.txt')
++
++ataques_inimigo_primeira_batalha = carregar_arquivo('ataques-inimigos/primeira-batalha.txt')
++ataques_inimigo_segunda_batalha = carregar_arquivo('ataques-inimigos/segunda-batalha.txt')
++
+ jogador = {
+-    'score' : 0,
++    'nome' : '',
+     'amigos': [],
+     'inimigos': [],
+     'caminhos': [],
+     'vida': 100,
+-    'sabedoria': 100,
+-    'arma': 'soco'
+-}
+-ataques = {
+-    'fraco' : 20,
+-    'medio' : 50,
+-    'forte' : 70,
+-    'especial' : 100
++    "ataques" : ["magia", "fogo", "fisico", "espada"],
++    'sabedoria' : 100
+ }
+
+    'vida' : 100,
