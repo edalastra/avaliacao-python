@@ -11,6 +11,7 @@ personagens = carregar_arquivo('personagens.txt')
 
 ataques_inimigo_primeira_batalha = carregar_arquivo('ataques-inimigos/primeira-batalha.txt')
 ataques_inimigo_segunda_batalha = carregar_arquivo('ataques-inimigos/segunda-batalha.txt')
+ataques_inimigo_terceira_batalha = carregar_arquivo('ataques-inimigos/terceira-batalha.txt')
 
 jogador = {
     'score' : 0,
@@ -25,7 +26,7 @@ jogador = {
 
 personagem1 = {
     'nome' : personagens[0],
-    'vida' : 100,
+    'vida' : 150,
 }
 personagem2 = {
     'nome' : personagens[1],
@@ -208,17 +209,17 @@ def primeira_batalha():
 
     if (personagem4['vida'] <= 0 and jogador['vida'] > 0):
         print('\033[32m' + "\nParabéns! Você venceu sua primeira batalha!" +'\033[0;0m' + "E como recompensa você pegou a espada Elixir, pertencente ao {}!".format(personagem4['nome']))
+        jogador['score'] += jogador['vida']
         jogador['vida'] = 100
         segunda_batalha()
 
     elif (personagem4['vida'] <= 0 and jogador['vida'] <= 0):
         print("Você atingiu o {} em cheio, porém, ele revidou e você também morreu!".format(personagem4['nome']))
-        print("Deseja jogar novamente? ([1] - Não)")
-        # game over
+        game_over()
 
     else:
-        print( '\033[31m' + "YOU DIED! " + '\033[0;0m' + "Deseja jogar novamente? ([1] - Não)")
-        # gameover
+        print("YOU DIED!")
+        game_over()
 
 def segunda_batalha():
     print("Sem descanso, você deve enfrenta-lá a todo custo para poder derrotar o {}!".format(personagem1['nome']))
@@ -253,9 +254,7 @@ def segunda_batalha():
         elif (opcao_decisao == 2):
             print("Este ataque não a fez nem cóssegas!")
 
-
             print('{} {}'.format(personagem3['nome'], ataques_inimigo_segunda_batalha[ataque_aleatorio]))
-
 
             print("\nSeu HP: {}".format(jogador['vida']))
             print('HP da {}: {}'.format(personagem3['nome'], personagem3['vida']))
@@ -263,31 +262,170 @@ def segunda_batalha():
         elif (opcao_decisao == 3):
             print("Em cheio! Ela está com dificuldades de se manter em pé!")
 
-
             print('{} {}'.format(personagem3['nome'], ataques_inimigo_segunda_batalha[ataque_aleatorio]))
-
 
             print("\nSeu HP: {}".format(jogador['vida']))
             print('HP da {}: {}'.format(personagem3['nome'], personagem3['vida']))
 
         elif (opcao_decisao == 4):
             print("Você a perfurou com sua Elixir!")
-            personagem3['vida'] -= 100
+
+            print('{} {}'.format(personagem3['nome'], ataques_inimigo_segunda_batalha[ataque_aleatorio]))
+
+            print("\nSeu HP: {}".format(jogador['vida']))
+            print('HP da {}: {}'.format(personagem3['nome'], personagem3['vida']))
 
         else:
             print("Decisão inválida!")
 
     if (personagem3['vida'] <= 0 and jogador['vida'] > 0):
         print("\nParabéns! Você venceu sua segunda batalha...\n")
+        desfecho()
+        jogador['score'] += jogador['vida']
         jogador['vida'] = 100
 
     elif (personagem3['vida'] <= 0 and jogador['vida'] <= 0):
         print("Você atingiu a {} em cheio, porém, ela revidou e você também morreu!".format(personagem3['nome']))
-        #game over
+        game_over()
 
     else:
-        print("YOU DIED! Deseja jogar novamente? ([1] - Não)")
-           #gameover
+        print("YOU DIED!")
+        game_over()
+
+def desfecho ():
+    print("Agora, após confrontos e batalhas, você está próximo de finalizar sua jornada e salvar o Reino! Mas toda salvação requer um esforço e sua última batalha será contra o {}!".format(personagem1['nome']))
+    print("O {} sempre está na catedral espalhando suas pregações de ódio, você tem a oportunidade de pegá-lo desprevinido e o matar, o que você decide?".format(personagem1['nome']))
+
+    print("[1] - Atacá-lo em stealth")
+    print("[2] - Confrontá-lo face a face")
+
+    opcao_decisao = int(input("Digite sua decisão: "))
+
+    if (opcao_decisao == 1):
+        print("Você vai por trás da catedral, camuflado entre os destroços e a mata cinza, pula a janela e avista o Mago Negro sozinho no altar, que aparentemene, está cochilando.")
+        print("Você, em silêncio, vai na direção dele, saca sua Elixir e...")
+        print("[1] - Perfura seu pulmão")
+        print("[2] - Repensa e o confronta face a face")
+        decisao_final1 = int(input("Digite sua decisão: "))
+        decisao_final(decisao_final1)
+
+    elif (opcao_decisao == 2):
+        face_a_face()
+
+    else:
+        print("Opção inválida!")
+
+def decisao_final(decisao):
+    while (True):
+        if (decisao == 1):
+            print("Ao se aproximar do {} com a intenção de matá-lo desprevinido, ele disperta do sono ao sentir sua presença e percebe suas intenções e a batalha inicia!".format(personagem1['nome']))
+            terceira_batalha()
+        elif(decisao == 2):
+            face_a_face()
+        else:
+            print("Opção inválida")
+
+def face_a_face():
+    print("Você o vê cochilando no altar, e grita: As trevas irão voltar para onde vieram! O {}, com cara de desprezo imediatamente invoca sua magia e parte pra batalha!".format(personagem1['nome']))
+    terceira_batalha()
+
+def terceira_batalha ():
+    print("")
+    print("*" * 40)
+    print("\t\tTERCEIRA BATALHA")
+    print("\t{} VS {}".format(jogador['nome'], personagem1['nome'].upper()))
+    print("*" * 40)
+
+    while (personagem1['vida'] > 0 and jogador['vida'] > 0):
+
+        ataque_aleatorio = randrange(0, len(ataques_inimigo_primeira_batalha))
+        personagem1['vida'] -= randrange(20, 50)
+        jogador['vida'] -= randrange(20, 40)
+
+        print("\nSelecione seu ataque:")
+        print("[1] - Ataque de {}".format(jogador['ataques'][0]))
+        print("[2] - Ataque de {}".format(jogador['ataques'][1]))
+        print("[3] - Ataque de {}".format(jogador['ataques'][2]))
+        print("[4] - Ataque de {}".format(jogador['ataques'][3]))
+
+        personagem1['vida'] -= randrange(0, 50)
+        jogador['vida'] -= randrange(0, 10)
+        ataque_aleatorio = randrange(0, len(ataques_inimigo_terceira_batalha))
+        opcao_decisao = int(input("\nDigite sua decisão: "))
+
+        if (opcao_decisao == 1):
+            print("A magia não funciona muito bem com o {}, afinal, ele a domina! Tente outra coisa!".format(personagem1['nome']))
+
+            print("\nSeu HP: {}".format(jogador['vida']))
+            print('HP do {}: {}'.format(personagem1['nome'], personagem1['vida']))
+        elif (opcao_decisao == 2):
+            print("O fogo o queima como um carvão! Muito bem!")
+
+            print('{} {}'.format(personagem1['nome'], ataques_inimigo_terceira_batalha[ataque_aleatorio]))
+
+            print("\nSeu HP: {}".format(jogador['vida']))
+            print('HP do {}: {}'.format(personagem1['nome'], personagem1['vida']))
+        elif (opcao_decisao == 3):
+            print("Com esse golpe ele irá ficar confuso!")
+
+            print('{} {}'.format(personagem1['nome'], ataques_inimigo_terceira_batalha[ataque_aleatorio]))
+
+            print("\nSeu HP: {}".format(jogador['vida']))
+            print('HP do {}: {}'.format(personagem1['nome'], personagem1['vida']))
+
+        elif (opcao_decisao == 4):
+            print("Wooow! Você decepou a mão dele, o tornando incapaz de usar o cajado!")
+
+            print('{} {}'.format(personagem1['nome'], ataques_inimigo_terceira_batalha[ataque_aleatorio]))
+
+            print("\nSeu HP: {}".format(jogador['vida']))
+            print('HP do {}: {}'.format(personagem1['nome'], personagem1['vida']))
+
+        else:
+            print("Opção inválida")
+
+    if(personagem1['vida'] <= 0 and jogador['vida'] > 0):
+        jogador['score'] += jogador['vida']
+        jogador['vida'] = 100
+        imprime_mensagem_vencedor()
+        game_over()
+
+    elif (personagem1['vida'] <= 0 and jogador['vida'] <= 0):
+        print("Você atingiu a {} em cheio, porém, ela revidou e você também morreu!".format(personagem3['nome']))
+        game_over()
+
+    else:
+        print("YOU DIED!")
+        game_over()
+
+def imprime_mensagem_vencedor():
+    print("Parabéns, você foi uma vela no escuro e venceu o jogo!")
+    print("       ___________      ")
+    print("      '._==_==_=_.'     ")
+    print("      .-\\:      /-.    ")
+    print("     | (|:.     |) |    ")
+    print("      '-|:.     |-'     ")
+    print("        \\::.    /      ")
+    print("         '::. .'        ")
+    print("           ) (          ")
+    print("         _.' '._        ")
+    print("        '-------'       ")
+
+def game_over():
+    1
+    print("*" * 40)
+    print("\t\tF I M  D E  J O G O")
+    print("\t\tJOGADOR: {}".format(jogador['nome'].upper()))
+    print("\t\tPONTUAÇÃO: {}".format(jogador['score']))
+    print("*" * 40)
+    print("Deseja jogar novamente?")
+    print("[1] - Sim")
+    print("[2] - Não")
+    restart = int(input("Opção: "))
+    if (restart == 1):
+        welcome()
+    else:
+        start()
 
 if (__name__ == "__main__"):
     start()
