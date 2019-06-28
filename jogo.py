@@ -26,7 +26,7 @@ jogador = {
 
 personagem1 = {
     'nome' : personagens[0],
-    'vida' : 150,
+    'vida' : 120,
 }
 personagem2 = {
     'nome' : personagens[1],
@@ -45,13 +45,16 @@ def start ():
     sair = 0
     while (sair == 0):
         print("\n[1] - INICIAR JOGO")
-        print("[2] - SAIR\n")
+        print("[2] - ACESSAR O HISTORICO DE JOGADORES")
+        print("[3] - SAIR\n")
         opcao = int(input("Digite uma opção: "))
 
         if (opcao == 1):
             jogador['nome'] = input("Informe seu nome: ").strip().upper()
             welcome()
-        elif (opcao == 2):
+        elif(opcao):
+            ranking()
+        elif (opcao == 3):
             sair = 1
         else:
             print("Opção inválida!")
@@ -208,8 +211,9 @@ def primeira_batalha():
             print("Decisão inválida!")
 
     if (personagem4['vida'] <= 0 and jogador['vida'] > 0):
-        print('\033[32m' + "\nParabéns! Você venceu sua primeira batalha!" +'\033[0;0m' + "E como recompensa você pegou a espada Elixir, pertencente ao {}!".format(personagem4['nome']))
+        print("\nParabéns! Você venceu sua primeira batalha! E como recompensa você pegou a espada Elixir, pertencente ao {}!".format(personagem4['nome']))
         jogador['score'] += jogador['vida']
+        print('Sua pontuação atual é : {}'.format(jogador['score']))
         jogador['vida'] = 100
         segunda_batalha()
 
@@ -280,9 +284,11 @@ def segunda_batalha():
 
     if (personagem3['vida'] <= 0 and jogador['vida'] > 0):
         print("\nParabéns! Você venceu sua segunda batalha...\n")
-        desfecho()
         jogador['score'] += jogador['vida']
+        print('Sua pontuação atual é : {}'.format(jogador['score']))
         jogador['vida'] = 100
+        desfecho()
+
 
     elif (personagem3['vida'] <= 0 and jogador['vida'] <= 0):
         print("Você atingiu a {} em cheio, porém, ela revidou e você também morreu!".format(personagem3['nome']))
@@ -311,7 +317,6 @@ def desfecho ():
 
     elif (opcao_decisao == 2):
         face_a_face()
-
     else:
         print("Opção inválida!")
 
@@ -338,23 +343,20 @@ def terceira_batalha ():
 
     while (personagem1['vida'] > 0 and jogador['vida'] > 0):
 
-        ataque_aleatorio = randrange(0, len(ataques_inimigo_primeira_batalha))
-        personagem1['vida'] -= randrange(20, 50)
-        jogador['vida'] -= randrange(20, 40)
-
         print("\nSelecione seu ataque:")
         print("[1] - Ataque de {}".format(jogador['ataques'][0]))
         print("[2] - Ataque de {}".format(jogador['ataques'][1]))
         print("[3] - Ataque de {}".format(jogador['ataques'][2]))
         print("[4] - Ataque de {}".format(jogador['ataques'][3]))
-
-        personagem1['vida'] -= randrange(0, 50)
-        jogador['vida'] -= randrange(0, 10)
+        personagem1['vida'] -= randrange(20, 50)
+        jogador['vida'] -= randrange(20, 40)
         ataque_aleatorio = randrange(0, len(ataques_inimigo_terceira_batalha))
         opcao_decisao = int(input("\nDigite sua decisão: "))
 
         if (opcao_decisao == 1):
             print("A magia não funciona muito bem com o {}, afinal, ele a domina! Tente outra coisa!".format(personagem1['nome']))
+
+            print('{} {}'.format(personagem1['nome'], ataques_inimigo_terceira_batalha[ataque_aleatorio]))
 
             print("\nSeu HP: {}".format(jogador['vida']))
             print('HP do {}: {}'.format(personagem1['nome'], personagem1['vida']))
@@ -386,6 +388,7 @@ def terceira_batalha ():
 
     if(personagem1['vida'] <= 0 and jogador['vida'] > 0):
         jogador['score'] += jogador['vida']
+        print('Sua pontuação atual é : {}'.format(jogador['score']))
         jogador['vida'] = 100
         imprime_mensagem_vencedor()
         game_over()
@@ -412,7 +415,11 @@ def imprime_mensagem_vencedor():
     print("        '-------'       ")
 
 def game_over():
-    1
+    arquivo = open('score.txt', 'a')
+    pontuacao = "{} {}\n".format(jogador["nome"], jogador['score'])
+    arquivo.write(pontuacao)
+    arquivo.close()
+
     print("*" * 40)
     print("\t\tF I M  D E  J O G O")
     print("\t\tJOGADOR: {}".format(jogador['nome'].upper()))
@@ -426,6 +433,12 @@ def game_over():
         welcome()
     else:
         start()
+
+def ranking():
+    rank = carregar_arquivo('score.txt')
+
+    for i in rank:
+        print(i)
 
 if (__name__ == "__main__"):
     start()
