@@ -1,4 +1,5 @@
 jogador = {
+    'score' : 0,
     'amigos': [],
     'inimigos': [],
     'caminhos': [],
